@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        body {
+            padding-top: 20px;
+            background: linear-gradient(135deg, #1c1c1c, #414345);
+            color: #ffffff;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .container {
+            width: 100%;
+            max-width: 600px;
+            padding: 20px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+            background: #2c2c2c;
+            border-radius: 10px;
+        }
+        .main h1 {
+            font-size: 36px;
+            text-align: center;
+            margin-bottom: 20px;
+            color: #33ff33;
+            visibility: visible; /* Ensure visibility */
+        }
+        .main a#back {
+            display: block;
+            margin-bottom: 20px;
+            font-style: italic;
+            text-decoration: none;
+            font-size: 20px;
+            color: #33ff33;
+            visibility: visible; /* Ensure visibility */
+        }
+        .main a#back:hover {
+            text-decoration: underline;
+        }
+        .main input {
+            width: 100%;
+            font-size: 18px;
+            padding: 10px;
+            margin: 10px 0;
+            border: none;
+            border-bottom: 2px solid #33ff33;
+            background: transparent;
+            color: #ffffff;
+        }
+        .main input::placeholder {
+            color: #b3b3b3;
+        }
+        .main input[type="submit"] {
+            background-color: #33ff33;
+            color: #000000;
+            padding: 16px 32px;
+            margin-top: 20px;
+            border-radius: 10px;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .main input[type="submit"]:hover {
+            background-color: #28cc28;
+        }
+    </style>
+    
+    
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12 main">
+                <a href="login" id="back">Back</a>
+                
+                <form action="/home" method="post">
+                    <h1>Registration Form</h1>
+                    <input type="text" class="box" id="name" name="username" placeholder="Name" required/>
+                    <input type="number" class="box" id="age" name="age" placeholder="Age" required/>
+                    <input type="email" class="box" id="email" name="email" placeholder="Email-Id" required/>
+                    <input type="text" class="box" id="phno" name="phno" placeholder="Mobile" required/>
+                    <input type="password" class="box" id="password" name="password" placeholder="Password" required/>
+                    <input type="text" class="box" id="city" name="city" placeholder="City" required/>
+                    <input type="text" class="box" id="state" name="state" placeholder="State" required/>
+                    <input type="text" class="box" id="street" name="street" placeholder="Street" required/>
+                    <input type="date" class="box" id="subscription_start_date" name="subscription_start_date" placeholder="Subscription Start Date" required/>
+                    <input type="date" class="box" id="subscription_end_date" name="subscription_end_date" placeholder="Subscription End Date" required/>
+                    <input type="submit"  value="Submit" id="submit"/>
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+</html>

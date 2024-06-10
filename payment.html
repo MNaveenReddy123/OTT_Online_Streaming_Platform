@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        .main {
+            padding: 20px;
+            font-family: Arial;
+            box-shadow: 5px 5px 7px 5px #8888;
+            margin: 20px;
+        }
+        .main h1 {
+            font-size: 36px;
+            text-align: center;
+            font-family: Arial;
+        }
+        input, select {
+            font-family: Arial, Helvetica, sans-serif;
+            width: 100%;
+            font-size: 20px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            border: none;
+            border-bottom: 2px solid #33ff33;
+        }
+        input[type=submit] {
+            font-family: Arial, Helvetica, sans-serif;
+            width: 100%;
+            background-color: #33ff33;
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            margin: 4px 0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="main">
+        <h1>Payment Form</h1>
+        <form action="/add-payment" method="post">
+            <input type="text" id="payment_id" name="payment_id" placeholder="Payment ID" required />
+            <br>
+            <input type="date" id="payment_date" name="payment_date" placeholder="Payment Date" required />
+            <br>
+            <input type="number" id="amount_due" name="amount_due" placeholder="Amount Due" required />
+            <br>
+            <input type="text" id="user_id" name="user_id" placeholder="User ID" required />
+            <br>
+            <select id="p_type" name="p_type" required>
+                <option value="" disabled selected>Payment Type</option>
+                <option value="Credit">Credit Card</option>
+                <option value="Debit">Debit Card</option>
+                <option value="NetBanking">Net Banking</option>
+                <option value="UPI">UPI</option>
+            </select>
+            <br>
+            <input type="number" id="credit_card_no" name="credit_card_no" placeholder="Credit Card No" />
+            <br>
+            <input type="number" id="debit_card_no" name="debit_card_no" placeholder="Debit Card No" />
+            <br>
+            <input type="number" id="net_banking_id" name="net_banking_id" placeholder="Net Banking ID" />
+            <br>
+            <input type="text" id="upi_id" name="upi_id" placeholder="UPI ID" />
+            <br>
+            <input type="submit" value="Submit" />
+        </form>
+    </div>
+</body>
+</html>

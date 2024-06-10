@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Search documentary</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        
+        body {
+        background: linear-gradient(135deg, #232526, #414345);
+        color: #ffffff; /* Ensure text is readable against the background */
+        margin: 0; /* Remove default margin */
+        height: 100vh; /* Ensure full viewport height */
+    }
+
+
+        .main {
+            padding: 20px;
+            font-family: Arial;
+            box-shadow: 5px 5px 7px 5px #8888;
+            margin: 20px;
+        }
+        .main h1 {
+            font-size: 36px;
+            text-align: center;
+            font-family: Arial;
+        }
+        input, select {
+            font-family: Arial, Helvetica, sans-serif;
+            width: 100%;
+            font-size: 20px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            border: none;
+            border-bottom: 2px solid #33ff33;
+        }
+        input[type=submit] {
+            font-family: Arial, Helvetica, sans-serif;
+            width: 100%;
+            background-color: #33ff33;
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            margin: 4px 0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-mod-3">
+
+            </div>
+            <div class="col-md-6 main">
+                <a href="home" style="text-decoration: none;">BACK</a>
+          <h1>Search Documentaries</h1>
+          <form id="searchForm">
+           <input type="text" id="query" name="query" placeholder="Enter documentary name" required />
+           <button class = "btn btn primary"type="submit">Search</button>
+           </form>
+           <div id="results"></div>
+
+    
+          <!-- Update the image source to fetch from TMDb API -->
+          <img src="" alt="" id="documentaryPoster">
+         </div>
+   </div>
+</div>
+    <script>
+
+    document.getElementById('searchForm').addEventListener('submit', function(event) {
+        event.preventDefault();
+        const query = document.getElementById('query').value;
+        fetch(`/search-documentaries?query=${query}`)
+            .then(response => response.json())
+            .then(data => {
+                const resultsDiv = document.getElementById('results');
+                resultsDiv.innerHTML = '';
+                if (data.length === 0) {
+                    resultsDiv.innerHTML = '<p>No documentaries found.</p>';
+                } else {
+                    data.forEach(documentary => {
+                        const documentaryDiv = document.createElement('div');
+                        documentaryDiv.innerHTML = `
+                            <h3>${documentary.name}</h3>
+                            <img src="" alt="${documentary.name} Poster" id="poster-${documentary.id}">
+                            <p>Number of Episodes: ${documentary.no_of_episodes}</p>
+                            <p>Release Date: ${documentary.release_date}</p>
+                            <p>Nationality: ${documentary.nationality}</p>
+                            <p>Budget: ${documentary.budget}</p>
+                            <p>Rating: ${documentary.rating}</p>
+                            <p>Runtime: ${documentary.runtime} minutes</p>
+                            <p>Producers: ${documentary.producers}</p>
+                            <p>Box Office: ${documentary.box_office}</p>
+                            <p>Number of Seasons: ${documentary.no_of_seasons}</p>
+                        `;
+                        resultsDiv.appendChild(documentaryDiv);
+
+                        // Fetch and set the documentary poster
+                        fetch(`https://api.themoviedb.org/3/search/movie?api_key=e0b81cf8b8946ec1302c93cf50b55e4e&query=${documentary.name}`)
+                            .then(response => response.json())
+                            .then(movieData => {
+                                if (movieData.results.length > 0) {
+                                    const posterPath = movieData.results[0].poster_path;
+                                    const posterImg = document.getElementById(`poster-${documentary.id}`);
+                                    posterImg.src = `https://image.tmdb.org/t/p/w500${posterPath}`;
+                                }
+                            })
+                            .catch(error => {
+                                console.error('Error fetching documentary poster:', error);
+                            });
+                    });
+                }
+            })
+            .catch(error => {
+                console.error('Error fetching documentaries:', error);
+                document.getElementById('results').innerHTML = '<p>Error fetching documentaries.</p>';
+            });
+    });
+</script>
+
+
+    </script>
+
+    
+</body>
+</html>

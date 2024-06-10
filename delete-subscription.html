@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Delete Subscription</title>
+
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        
+    body {
+        background: linear-gradient(135deg, #000428, #004e92);
+        color: #ffffff; /* Ensure text is readable against the background */
+        margin: 0; /* Remove default margin */
+        height: 100vh; /* Ensure full viewport height */
+    }
+
+
+        .main {
+            padding: 20px;
+            font-family: Arial;
+            box-shadow: 5px 5px 7px 5px #8888;
+            margin: 20px;
+        }
+        .main h1 {
+            font-size: 36px;
+            text-align: center;
+            font-family: Arial;
+        }
+        input, select {
+            font-family: Arial, Helvetica, sans-serif;
+            width: 100%;
+            font-size: 20px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            border: none;
+            border-bottom: 2px solid #33ff33;
+        }
+        input[type=submit] {
+            font-family: Arial, Helvetica, sans-serif;
+            width: 100%;
+            background-color: #33ff33;
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            margin: 4px 0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-mod-3">
+
+            
+                <div class="col-md-6 main">
+    <a href="subscription" style="text-decoration: none;">BACK</a>
+    <h1>Delete Subscription</h1>
+    <form id="deleteForm">
+        <label for="subscriptionId">Subscription ID:</label>
+        <input type="text" id="subscriptionId" name="subscriptionId" required>
+        <button type="submit">Delete</button>
+    </form>
+</div></div></div>
+    <div id="deleteResult"></div>
+
+    <script>
+        document.getElementById('deleteForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const subscriptionId = document.getElementById('subscriptionId').value;
+
+            try {
+                const response = await fetch('/delete-subscription', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ subscriptionId })
+                });
+
+                const result = await response.json();
+                const deleteResultDiv = document.getElementById('deleteResult');
+
+                if (result.success) {
+                    deleteResultDiv.textContent = 'Subscription deleted successfully.';
+                } else {
+                    deleteResultDiv.textContent = 'Failed to delete subscription.';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('deleteResult').textContent = 'An error occurred.';
+            }
+        });
+    </script>
+</body>
+</html>

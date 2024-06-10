@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login Page</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;600&family=Pacifico&display=swap');
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            background: linear-gradient(135deg, #17191f, #764ba2);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            color: #fff;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.2);
+            padding: 40px;
+            border-radius: 10px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+            width: 350px;
+            text-align: center;
+            backdrop-filter: blur(10px);
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        h1 {
+            font-family: 'Pacifico', cursive;
+            margin-bottom: 20px;
+            font-size: 2.5em;
+            animation: slideIn 1s ease-in-out;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 20px;
+            border: none;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+            background-color: #6a5acd;
+            color: white;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            animation: fadeInUp 1.5s ease-in-out;
+        }
+
+        button:hover {
+            background-color: #483d8b;
+        }
+
+        #loginResult {
+            margin-top: 20px;
+            color: red;
+        }
+
+        #sign {
+            text-decoration: none;
+            font-style: italic;
+            color: #ffebcd;
+            transition: color 0.3s ease;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        #sign:hover {
+            color: #ffdead;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                transform: translateY(20px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Login</h1>
+        <form id="loginForm">
+            <label for="username">Username:</label>
+            <input type="text" id="username" name="username" required>
+            <label for="password">Password:</label>
+            <input type="password" id="password" name="password" required>
+            <button type="submit">Login</button>
+        </form>
+        <p>New user? <a href="index" id="sign">Sign Up</a></p>
+        <div id="loginResult"></div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            try {
+                const response = await fetch('/login', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ username, password })
+                });
+
+                const result = await response.json();
+                const loginResultDiv = document.getElementById('loginResult');
+
+                if (result.success) {
+                    loginResultDiv.textContent = 'Login successful!';
+                    setTimeout(function() {
+                        window.location.href = "home"; // replace with your destination URL
+                    }, 3000);
+                } else {
+                    loginResultDiv.textContent = 'Invalid username or password.';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('loginResult').textContent = 'An error occurred.';
+            }
+        });
+    </script>
+</body>
+</html>

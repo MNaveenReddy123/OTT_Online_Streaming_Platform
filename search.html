@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+         body {
+        background: linear-gradient(135deg, #232526, #414345);
+        color: #ffffff; /* Ensure text is readable against the background */
+        margin: 0; /* Remove default margin */
+        height: 100vh; /* Ensure full viewport height */
+    }
+        .main {
+            padding: 20px;
+            font-family: Arial;
+            box-shadow: 5px 5px 7px 5px #8888;
+            margin: 20px;
+        }
+        .main h1 {
+            font-size: 36px;
+            text-align: center;
+            font-family: Arial;
+        }
+        input, button {
+            font-family: Arial, Helvetica, sans-serif;
+            width: 100%;
+            font-size: 20px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            border: none;
+            border-bottom: 2px solid #33ff33;
+        }
+        button {
+            background-color: #33ff33;
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            margin: 4px 0;
+            border-radius: 10px;
+        }
+        .movie {
+            padding: 10px;
+            border: 1px solid #ccc;
+            margin: 10px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-mod-3">
+
+            </div>
+            <div class="col-md-6 main">
+                <a href="home" style="text-decoration: none;">BACK</a>
+        <h1>Search Movies</h1>
+        <form id="searchForm">
+            <input type="text" id="query" name="query" placeholder="Enter movie name" required />
+            <br>
+            <button type="submit">Search</button>
+        </form>
+        <div id="poster"></div>
+        <div id="results"></div>
+        <!-- Add this div for movie poster -->
+        
+
+    </div>
+ </div>
+</div>
+    <script>
+        const apiKey = 'e0b81cf8b8946ec1302c93cf50b55e4e'; // Replace with your actual TMDb API key
+
+document.getElementById('searchForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    const query = document.getElementById('query').value;
+    fetch(`https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&query=${query}`)
+        .then(response => response.json())
+        .then(data => {
+            const resultsDiv = document.getElementById('results');
+            resultsDiv.innerHTML = '';
+            if (data.results.length === 0) {
+                resultsDiv.innerHTML = '<p>No movies found.</p>';
+            } else {
+                const movie = data.results[0]; // Get the first movie from search results
+                const movieDiv = document.createElement('div');
+                movieDiv.className = 'movie';
+                movieDiv.innerHTML = `
+                    <h3>${movie.title}</h3>
+                    <p>Release Date: ${movie.release_date}</p>
+                    <p>Overview: ${movie.overview}</p>
+                    <p>Rating: ${movie.vote_average}</p>
+                    <p>Runtime: ${movie.runtime} minutes</p>
+                    <p>Popularity: ${movie.popularity}</p>
+                `;
+                resultsDiv.appendChild(movieDiv);
+
+                // Fetch movie poster
+                fetch(`https://api.themoviedb.org/3/movie/${movie.id}/images?api_key=${apiKey}`)
+                    .then(response => response.json())
+                    .then(images => {
+                        if (images.posters && images.posters.length > 0) {
+                            const posterUrl = `https://image.tmdb.org/t/p/w500${images.posters[0].file_path}`;
+                            const posterDiv = document.getElementById('poster');
+                            posterDiv.innerHTML = `<img src="${posterUrl}" alt="${movie.title} Poster" style="max-width: 300px;">`;
+                        } else {
+                            const posterDiv = document.getElementById('poster');
+                            posterDiv.innerHTML = '<p>No poster available.</p>';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error fetching movie images:', error);
+                        document.getElementById('poster').innerHTML = '<p>Error fetching movie images.</p>';
+                    });
+            }
+        })
+        .catch(error => {
+            console.error('Error fetching movies:', error);
+            document.getElementById('results').innerHTML = '<p>Error fetching movies.</p>';
+        });
+});
+
+          
+          
+    </script>
+</body>
+</html>

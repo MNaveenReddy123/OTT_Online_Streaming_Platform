@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subscription Form</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+       
+    body {
+        background: linear-gradient(135deg, #232526, #414345);
+        color: #ffffff; /* Ensure text is readable against the background */
+        margin: 0; /* Remove default margin */
+        height: 100vh; /* Ensure full viewport height */
+    }
+
+
+
+        .main {
+            padding: 20px;
+            font-family: Arial;
+            box-shadow: 5px 5px 7px 5px #8888;
+            margin: 20px;
+        }
+        .main h1 {
+            font-size: 36px;
+            text-align: center;
+            font-family: Arial;
+        }
+        input, select {
+            font-family: Arial, Helvetica, sans-serif;
+            width: 100%;
+            font-size: 20px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            border: none;
+            border-bottom: 2px solid #33ff33;
+        }
+        input[type=submit] {
+            font-family: Arial, Helvetica, sans-serif;
+            width: 100%;
+            background-color: #33ff33;
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            margin: 4px 0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-mod-3">
+
+            </div>
+            <div class="col-md-6 main">
+                <a href="home" style="text-decoration: none;">BACK</a>
+    <h1>Search Artist</h1>
+    <form id="searchForm">
+        <label for="artistName">Enter Artist Name:</label>
+        <input type="text" id="artistName" name="artistName" required>
+        <button type="submit">Search</button>
+    </form>
+    <div id="results"></div>
+            </div></div></div>
+    <script>
+        document.getElementById('searchForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const artistName = document.getElementById('artistName').value;
+
+            try {
+                const response = await fetch('/search-artist', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ artistName })
+                });
+
+                const result = await response.json();
+                const resultsDiv = document.getElementById('results');
+
+                if (result.success) {
+                    resultsDiv.innerHTML = '';
+                    result.artists.forEach(artist => {
+                        const artistDiv = document.createElement('div');
+                        artistDiv.innerHTML = `
+                            <p>Name: ${artist.name}</p>
+                            <p>DOB: ${artist.DOB}</p>
+                            <p>Gender: ${artist.gender}</p>
+                            <p>Industry: ${artist.industry}</p>
+                            <p>TV Show ID: ${artist.tv_show_id}</p>
+                            <p>Documentary ID: ${artist.documentary_id}</p>
+                            <p>Movie ID: ${artist.movie_id}</p>
+                        `;
+                        resultsDiv.appendChild(artistDiv);
+                    });
+                } else {
+                    resultsDiv.innerHTML = '<p>No artists found.</p>';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('results').innerHTML = '<p>An error occurred.</p>';
+            }
+        });
+    </script>
+</body>
+</html>

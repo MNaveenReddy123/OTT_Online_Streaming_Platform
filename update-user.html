@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Update User Information</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
+    <style>
+        
+    body {
+       
+    
+        background: linear-gradient(135deg, #41295a, #2f0743);
+        color: #ffffff; /* Ensure text is readable against the background */
+        margin: 0; /* Remove default margin */
+        height: 100vh; /* Ensure full viewport height */
+    }
+
+
+
+        .main {
+            padding: 20px;
+            font-family: Arial;
+            box-shadow: 5px 5px 7px 5px #8888;
+            margin: 20px;
+        }
+        .main h1 {
+            font-size: 36px;
+            text-align: center;
+            font-family: Arial;
+        }
+        input, select {
+            font-family: Arial, Helvetica, sans-serif;
+            width: 100%;
+            font-size: 20px;
+            padding: 12px 20px;
+            margin: 8px 0;
+            border: none;
+            border-bottom: 2px solid #33ff33;
+        }
+        input[type=submit] {
+            font-family: Arial, Helvetica, sans-serif;
+            width: 100%;
+            background-color: #33ff33;
+            border: none;
+            color: white;
+            padding: 16px 32px;
+            margin: 4px 0;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+            <div class="col-mod-3">
+
+            </div>
+            <div class="col-md-6 main">
+    <a href="home" style="text-decoration: none;">BACK</a>
+    <h1>Update User Information</h1>
+    <form id="updateForm">
+        <label for="userId">User ID:</label>
+        <input type="text" id="userId" name="userId" required>
+        <br>
+        <label for="userName">New User Name:</label>
+        <input type="text" id="userName" name="userName" required><br>
+        <label for="age">New Age:</label>
+        <input type="number" id="age" name="age" required><br>
+        <label for="phone">New Phone:</label>
+        <input type="text" id="phone" name="phone" required><br>
+        <label for="city">New City:</label>
+        <input type="text" id="city" name="city" required><br>
+        <label for="state">New State:</label>
+        <input type="text" id="state" name="state" required><br>
+        <label for="street">New Street:</label>
+        <input type="text" id="street" name="street" required><br>
+        <button type="submit">Update</button>
+    </form>
+    <p>Wanna delete account?<a href="delete-user" style="text-decoration: none; font-style: italic;">Fine delete||</a></p>
+    <div id="updateResult"></div>
+    </div>
+    </div>
+</div>
+
+    <script>
+        document.getElementById('updateForm').addEventListener('submit', async function(event) {
+            event.preventDefault();
+            const userId = document.getElementById('userId').value;
+            const userName = document.getElementById('userName').value;
+            const age = document.getElementById('age').value;
+            const phone = document.getElementById('phone').value;
+            const city = document.getElementById('city').value;
+            const state = document.getElementById('state').value;
+            const street = document.getElementById('street').value;
+
+            try {
+                const response = await fetch('/update-user', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({ userId, userName, age, phone, city, state, street })
+                });
+
+                const result = await response.json();
+                const updateResultDiv = document.getElementById('updateResult');
+
+                if (result.success) {
+                    updateResultDiv.textContent = 'User information updated successfully.';
+                } else {
+                    updateResultDiv.textContent = 'Failed to update user information.';
+                }
+            } catch (error) {
+                console.error('Error:', error);
+                document.getElementById('updateResult').textContent = 'An error occurred.';
+            }
+        });
+    </script>
+</body>
+</html>
